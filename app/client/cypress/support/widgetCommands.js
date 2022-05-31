@@ -1031,9 +1031,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "readTableV2dataPublish",
   (rowNum, colNum, shouldNotGoOneLeveDeeper) => {
-    const selector = `.t--widget-tablewidgetv2 .tbody .td[data-rowindex=${rowNum}][data-colindex=${colNum}] div ${
-      !shouldNotGoOneLeveDeeper ? "div" : ""
-    }`;
+    const selector = `.t--widget-tablewidgetv2 .tbody .td[data-rowindex=${rowNum}][data-colindex=${colNum}]`;
     const tabVal = cy.get(selector).invoke("text");
     return tabVal;
   },
@@ -1045,6 +1043,14 @@ Cypress.Commands.add(
     const selector = `.t--widget-tablewidget .tbody .td[data-rowindex=${rowNum}][data-colindex=${colNum}] div ${
       !shouldNotGotOneLeveDeeper ? "div" : ""
     }`;
+    cy.get(selector).should("have.css", cssProperty, cssValue);
+  },
+);
+
+Cypress.Commands.add(
+  "readTableV2dataValidateCSS",
+  (rowNum, colNum, cssProperty, cssValue) => {
+    const selector = `.t--widget-tablewidgetv2 .tbody .td[data-rowindex=${rowNum}][data-colindex=${colNum}] .cell-wrapper`;
     cy.get(selector).should("have.css", cssProperty, cssValue);
   },
 );
