@@ -1143,6 +1143,18 @@ Cypress.Commands.add(
   },
 );
 
+Cypress.Commands.add(
+  "readTableV2dataFromSpecificIndex",
+  (rowNum, colNum, index) => {
+    const selector = `.t--widget-tablewidgetv2 .tbody .td[data-rowindex=${rowNum}][data-colindex=${colNum}]`;
+    const tabVal = cy
+      .get(selector)
+      .eq(index)
+      .invoke("text");
+    return tabVal;
+  },
+);
+
 Cypress.Commands.add("tablefirstdataRow", () => {
   let tabVal = cy
     .xpath(
