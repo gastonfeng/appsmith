@@ -98,7 +98,7 @@ export function InlineCellEditor({
 }: InlineEditorPropsType) {
   const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   const [cursorPos, setCursorPos] = useState(value.length);
-  const onFocusChange = useCallback((focus: boolean) => !focus && onSave(), [
+  const onFocusChange = useCallback((focus: boolean) => !focus && onSave, [
     onSave,
   ]);
 
@@ -143,6 +143,7 @@ export function InlineCellEditor({
     <Wrapper
       accentColor={accentColor}
       allowCellWrapping={allowCellWrapping}
+      className="t--inlined-cell-editor"
       compactMode={compactMode}
       textSize={textSize}
       verticalAlignment={verticalAlignment}

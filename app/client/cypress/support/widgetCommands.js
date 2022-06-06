@@ -1261,3 +1261,70 @@ Cypress.Commands.add(
     }
   },
 );
+
+Cypress.Commands.add("getTableCellHeight", (x, y) => {
+  return cy
+    .get(
+      `.t--widget-tablewidgetv2 .tbody .td[data-colindex=${x}][data-rowindex=${y}] .cell-wrapper div`,
+    )
+    .invoke("css", "height");
+});
+
+Cypress.Commands.add("hoverTableCell", (x, y) => {
+  return cy.get(`[data-colindex="${x}"][data-rowindex="${y}"]`).then((ele) => {
+    const { left, top } = ele[0].getBoundingClientRect();
+    cy.get(
+      `[data-colindex=${x}][data-rowindex=${y}] .t--table-text-cell`,
+    ).trigger("mousemove", top + 5, left + 5, {
+      eventConstructor: "MouseEvent",
+      force: true,
+    });
+  });
+});
+
+Cypress.Commands.add("editTableCell", (x, y) => {
+  cy.get(`[data-colindex="${x}"][data-rowindex="${y}"] .t--editable-cell-icon`)
+    .invoke("show")
+    .click({ force: true });
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] .t--inlined-cell-editor input.bp3-input`,
+  ).should("exist");
+});
+
+Cypress.Commands.add("makeColumnEditable", (column) => {
+  cy.get(
+    `[data-rbd-draggable-id="${column}"] .t--card-checkbox input+span`,
+  ).click();
+});
+
+Cypress.Commands.add("enterTableCellValue", (x, y, text) => {
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] .t--inlined-cell-editor input.bp3-input`,
+  )
+    .clear()
+    .type(text);
+});
+
+Cypress.Commands.add("discardTableCellValue", (x, y) => {
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] .t--inlined-cell-editor input.bp3-input`,
+  ).type("{esc}", { force: true });
+});
+
+Cypress.Commands.add("saveTableCellValue", (x, y) => {
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] .t--inlined-cell-editor input.bp3-input`,
+  ).type("{enter}", { force: true });
+});
+
+Cypress.Commands.add("saveTableRow", (x, y) => {
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] button span:contains('Save')`,
+  ).click({ force: true });
+});
+
+Cypress.Commands.add("discardTableRow", (x, y) => {
+  cy.get(
+    `[data-colindex="${x}"][data-rowindex="${y}"] button span:contains('Discard')`,
+  ).click({ force: true });
+});
