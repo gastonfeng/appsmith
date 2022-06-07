@@ -24,7 +24,7 @@ describe("Table widget inline editing functionality", () => {
     );
   });
 
-  it("should check that turning on editablity turns on edit in all the edtiable column in the list", () => {
+  it("should check that turning on editablity turns on edit in all the editable column in the list", () => {
     cy.openPropertyPane("tablewidgetv2");
     function checkEditableCheckbox(expected) {
       ["step", "task", "status"].forEach((column) => {
@@ -49,7 +49,7 @@ describe("Table widget inline editing functionality", () => {
     checkEditableCheckbox("not.exist");
   });
 
-  it("should check that turning on editablity DOESN'T turn on edit in the non edtiable column in the list", () => {
+  it("should check that turning on editablity DOESN'T turn on edit in the non editable column in the list", () => {
     cy.openPropertyPane("tablewidgetv2");
     cy.get(
       '[data-rbd-draggable-id="action"] .t--card-checkbox.t--checked',
@@ -461,7 +461,7 @@ describe("Table widget inline editing functionality", () => {
     });
   });
 
-  it("should check that onsubmit event is triggred when changes are saved", () => {
+  it("should check that onsubmit event is triggered when changes are saved", () => {
     cy.openPropertyPane("tablewidgetv2");
     cy.makeColumnEditable("step");
     cy.editColumn("step");
@@ -639,7 +639,7 @@ describe("Table widget inline editing functionality with Text wrapping functiona
     cy.addDsl(dsl);
   });
 
-  it.only("should check that inline editing works with teinlixt wrapping disabled", () => {
+  it("should check that inline editing works with text wrapping disabled", () => {
     cy.openPropertyPane("tablewidgetv2");
     cy.makeColumnEditable("step");
     cy.editTableCell(0, 0);
@@ -661,16 +661,13 @@ describe("Table widget inline editing functionality with Text wrapping functiona
     ).should("not.be.disabled");
   });
 
-  it.only("should check that doesn't grow taller when text wrapping is disabled", () => {
+  it("should check that doesn't grow taller when text wrapping is disabled", () => {
     cy.openPropertyPane("tablewidgetv2");
     cy.makeColumnEditable("step");
+    cy.editTableCell(0, 0);
     cy.get(
       "[data-colindex='0'][data-rowindex='0'] .t--inlined-cell-editor",
     ).should("have.css", "height", "40px");
-    cy.getTableCellHeight(0, 0).then((height) => {
-      expect(height).to.equal("28px");
-    });
-    cy.editTableCell(0, 0);
     cy.enterTableCellValue(0, 0, "this is a very long cell value");
     cy.get(
       "[data-colindex='0'][data-rowindex='0'] .t--inlined-cell-editor",
@@ -680,16 +677,17 @@ describe("Table widget inline editing functionality with Text wrapping functiona
   it("should check that grows taller when text wrapping is enabled", () => {
     cy.openPropertyPane("tablewidgetv2");
     cy.makeColumnEditable("step");
+    cy.editColumn("step");
     cy.get(".t--property-control-cellwrapping .bp3-control-indicator")
       .first()
       .click();
-    cy.getTableCellHeight(0, 0).then((height) => {
-      expect(height).to.equal("28px");
-    });
     cy.editTableCell(0, 0);
+    cy.get(
+      "[data-colindex='0'][data-rowindex='0'] .t--inlined-cell-editor",
+    ).should("have.css", "height", "42px");
     cy.enterTableCellValue(0, 0, "this is a very long cell value");
-    cy.getTableCellHeight(0, 0).then((height) => {
-      expect(height).to.not.equal("28px");
-    });
+    cy.get(
+      "[data-colindex='0'][data-rowindex='0'] .t--inlined-cell-editor",
+    ).should("not.have.css", "height", "42px");
   });
 });
