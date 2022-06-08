@@ -53,6 +53,10 @@ describe("Table Widget text wrapping functionality", function() {
         expected: "exist",
       },
       {
+        columnType: "Plain Text",
+        expected: "exist",
+      },
+      {
         columnType: "Number",
         expected: "exist",
       },
@@ -84,10 +88,6 @@ describe("Table Widget text wrapping functionality", function() {
         columnType: "Edit Actions",
         expected: "not.exist",
       },
-      {
-        columnType: "Plain Text",
-        expected: "exist",
-      },
     ].forEach((data, i) => {
       cy.get(commonlocators.changeColType)
         .last()
@@ -106,7 +106,14 @@ describe("Table Widget text wrapping functionality", function() {
     cy.editColumn("id");
 
     ["URL", "Number", "Date", "Plain Text"].forEach((data, i) => {
-      cy.changeColumnType(data);
+      cy.get(commonlocators.changeColType)
+        .last()
+        .click();
+      cy.get(".t--dropdown-option")
+        .children()
+        .contains(data)
+        .click();
+      cy.wait("@updateLayout");
       cy.getTableCellHeight(0, 0).then((height) => {
         expect(height).to.equal("28px");
       });
