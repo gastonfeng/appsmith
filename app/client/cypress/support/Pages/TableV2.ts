@@ -162,15 +162,15 @@ export class TableV2 {
     else
       this.OpenFilter()
 
-    this.agHelper.GetNClick(this._filterColumnsDropdown, index, true);
+    this.agHelper.GetNClick(this._filterColumnsDropdown, index);
     cy.get(this._dropdownText).contains(colName).click()
-    this.agHelper.GetNClick(this._filterConditionDropdown, index, true)
+    this.agHelper.GetNClick(this._filterConditionDropdown, index)
     cy.get(this._dropdownText).contains(colCondition).click()
 
     if (inputText)
-      this.agHelper.GetNClick(this._filterInputValue, index, true).type(inputText).wait(500)
+      this.agHelper.GetNClick(this._filterInputValue, index).type(inputText).wait(500)
 
-    this.agHelper.GetNClick(this._filterApplyBtn, undefined, true)
+    this.agHelper.GetNClick(this._filterApplyBtn, undefined)
     //this.agHelper.ClickButton("APPLY")
   }
 
